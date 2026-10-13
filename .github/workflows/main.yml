@@ -1,0 +1,44 @@
+
+姓名: 构建安卓安装包
+
+在……之上:
+workflow_dispatch:
+推:
+分支机构:
+      - 主要的
+
+权限:
+内容: 读
+
+工作:
+建立:
+连续的: Ubuntu-最新
+
+步骤:
+      - 姓名: 签出源
+uses: 操作/结帐@v4
+
+-姓名: 设置JDK17
+uses: 操作/设置-Java@v4
+和……一起:
+分布: temurin
+java版: "17"
+
+      - 姓名: 设置渐变
+uses: Gradle/操作/设置-Gradle@v4
+和……一起:
+gradle-version: "8.11.1"
+
+      - 姓名: 构建安卓安装包
+跑: Gradle-no-daemon:app-control:assemblyDebug:app-agent:assemblyDebug
+
+      - 姓名: 上传安装包
+如果: 成功()
+uses: 操作/上载工件@v4
+和……一起:
+姓名: 远程控制-调试-APKs
+路径: |
+app-control/build/outputs/apk/debug/*.apk
+app-agent/build/outputs/apk/debug/*.apk
+if-no-file-found: 误差
+保留天数: 7
